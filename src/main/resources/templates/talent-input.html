@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>タレント入力</title>
+</head>
+
+<body>
+
+	<h2>タレント入力</h2>
+
+	<form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}">
+
+		タレント名:
+		<input type="text" th:field="*{talentName}">
+		<div th:errors="*{talentName}" style="color:red"> </div>
+		<br>
+
+		好きな理由:
+		<input type="text" th:field="*{reason}">
+		<div th:errors="*{talentName}" style="color:red"> </div>
+		<br>
+		
+		<button type="submit">確認画面へ</button>
+	</form>
+
+</body>
+
+</html>
