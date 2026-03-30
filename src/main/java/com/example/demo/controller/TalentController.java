@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.example.demo.form.TalentForm;
 
 @Controller
-public class TallentController { // クラス名も Talent と L一つが一般的ですが、そのままでも動きます
+public class TalentController { // クラス名も Talent と L一つが一般的ですが、そのままでも動きます
 
 	@GetMapping("/talent")
 	public String showForm(TalentForm talentForm, Model model) {
