@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,11 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
+import com.example.demo.repository.TalentRepository;
 
 @Controller
 public class TalentController { // クラス名も Talent と L一つが一般的ですが、そのままでも動きます
 
+	@Autowired
+	private TalentRepository talentRepository;
+	
 	@GetMapping("/talent")
 	public String showForm(TalentForm talentForm, Model model) {
 	   
@@ -43,12 +49,18 @@ public class TalentController { // クラス名も Talent と L一つが一般�
 
 	@PostMapping("/talent/complete")
 	public String complete(@ModelAttribute TalentForm form) {
-		// ここで Repository.save(form) などを行う予定ですね！
-		return "redirect:/talent/complete"; // 完了画面のURLへリダイレクト
+		
+		Talent talent = new Talent();
+		talent.setTalentName(form.getTalentName());
+		talent.setReason(form.getReason());
+		
+		talentRepository.save(talent);
+		
+		return "redirect:/talent/complete"; //リダイレクトで二重投稿の防止
 	}
 
 	@GetMapping("/talent/complete")
 	public String showComplete() {
-		return "talent-complete"; // templates/talent-complete.html を表示
+		return "talent-complete"; 
 	}
 }
