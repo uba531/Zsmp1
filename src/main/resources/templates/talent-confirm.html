@@ -20,8 +20,8 @@
 
 	<form th:action="@{/talent}" method="get" th:object="${talentForm}">
 		
-		<input type="hidden" name="talentName" th:field="*{talentForm.talentName}">
-		<input type="hidden" name="reason"     th:field="*{talentForm.reason}">
+		<input type="hidden" name="talentName" th:field="*{talentName}">
+		<input type="hidden" name="reason"     th:field="*{reason}">
 		<button type="submit">修正</button>
 		
 	</form>
