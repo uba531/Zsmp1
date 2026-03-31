@@ -1,24 +1,46 @@
-<form th:action="@{/talent/complete}" method="post" th:object="${talentForm}">
-    <input type="hidden" th:field="*{talentName}">	
-    <input type="hidden" th:field="*{reason}">
-    <button type="submit">確定</button>
-</form>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 
-<form th:action="@{/talent}" method="get">
-    <input type="hidden" name="talentName" th:value="${talentForm.talentName}">
-    <input type="hidden" name="reason" th:value="${talentForm.reason}">
-    <button type="submit">修正</button>
-</form>
+<head>
+	<meta charset="UTF-8">
+	<title>確認</title>
+</head>
+
+<body>
+	<h2>確認</h2>
+
+	<p>タレント名: <span th:text="${talentForm.talentName}"></span></p>
+	<p>好きな理由: <span th:text="${talentForm.reason}"></span></p>
+
+	<form th:action="@{/talent/complete}" method="post" th:object="${talentForm}">
+		<input type="hidden" th:field="*{talentName}">
+		<input type="hidden" th:field="*{reason}">
+		<button type="submit">確定</button>
+	</form>
+
+	<form th:action="@{/talent}" method="get" th:object="${talentForm}">
+		
+		<input type="hidden" name="talentName" th:field="*{talentForm.talentName}">
+		<input type="hidden" name="reason"     th:field="*{talentForm.reason}">
+		<button type="submit">修正</button>
+		
+	</form>
 
 
-<form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}">
-    タレント名:
-    <input type="text" th:field="*{talentName}">
-    <div th:errors="*{talentName}" style="color:red"></div>
-    <br>
+	<form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}">
+		
+		タレント名:
+		<input type="text" th:field="*{talentName}">
+		<div th:errors="*{talentName}" style="color:red"></div>
+		<br>
 
-    好きな理由:
-    <input type="text" th:field="*{reason}">
-    <div th:errors="*{reason}" style="color:red"></div> <br>
-    
-    <button type="submit">確認画面へ</button> </form>
+		好きな理由:
+		<input type="text" th:field="*{reason}">
+		<div th:errors="*{reason}" style="color:red"></div> <br>
+
+		<button type="submit">確認画面へ</button>
+	</form>
+
+</body>
+
+</html>
