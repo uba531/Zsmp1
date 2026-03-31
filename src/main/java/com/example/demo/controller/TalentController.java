@@ -15,7 +15,7 @@ import com.example.demo.form.TalentForm;
 import com.example.demo.repository.TalentRepository;
 
 @Controller
-public class TalentController { // クラス名も Talent と L一つが一般的ですが、そのままでも動きます
+public class TalentController { 
 
 	@Autowired
 	private TalentRepository talentRepository;
