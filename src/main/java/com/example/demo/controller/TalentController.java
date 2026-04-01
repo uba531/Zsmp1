@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
 import com.example.demo.service.TalentService;
 
@@ -82,4 +83,26 @@ public class TalentController {
 	    
 	    return "redirect:/talent/list";
 	}
+	
+	//IDを受け取って編集画面に移動する
+	@GetMapping("/talent/edit")
+	public String edit(@RequestParam Integer id, Model model) {
+	    // 1. まずはDBからデータを1回だけ取ってきて、talentという変数に入れる
+	    Talent talent = talentService.findById(id);
+
+	    // (オプション) もしデータがなかった時のための安全策
+	    if (talent == null) {
+	        return "redirect:/talent/list"; // 一覧に逃がす
+	    }
+
+	    // 2. 取ってきたデータをForm（バケツ）に移し替える
+	    TalentForm talentForm = new TalentForm();
+	    talentForm.setId(talent.getId());
+	    talentForm.setTalentName(talent.getTalentName());
+	    talentForm.setReason(talent.getReason());
+	    
+	    model.addAttribute("talentForm", talentForm);
+	    return "talent-input";
+	}
+	
 }
