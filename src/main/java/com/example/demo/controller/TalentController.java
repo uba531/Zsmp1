@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.form.TalentForm;
 import com.example.demo.service.TalentService;
@@ -69,5 +70,16 @@ public class TalentController {
 	@GetMapping("/talent/complete")
 	public String showComplete() {
 		return "talent-complete"; 
+	}
+	
+	
+	
+	//IDを受け取って削除するコントローラー
+	@PostMapping("/talent/delete")
+	public String delete(@RequestParam Integer id) {
+	    // ServiceにあるIDデリートの呼び出し
+	    talentService.delete(id);
+	    
+	    return "redirect:/talent/list";
 	}
 }
