@@ -28,4 +28,9 @@ public class TalentService {
         
         talentRepository.save(talent);
     }
+    
+ // IDを指定して削除
+    public void delete(Integer id) {
+        talentRepository.deleteById(id);
+    }
 }
