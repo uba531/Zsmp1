@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>タレント一覧</title>
+</head>
+<body>
+    <h1>登録済みタレント一覧</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>理由</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="talent : ${talentList}">
+                <td th:text="${talent.id}">1</td>
+                <td th:text="${talent.talentName}">名前</td>
+                <td th:text="${talent.reason}">理由</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/talent}">新規登録に戻る</a>
+</body>
+</html>

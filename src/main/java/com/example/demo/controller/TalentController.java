@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,19 @@ public class TalentController {
 	    model.addAttribute("talentForm", talentForm);
 	    
 	    return "talent-input";
+	}
+	
+	
+	//RepositoryでDBから全部のデータを取得
+	@GetMapping("/talent/list")
+	public String showList(Model model) {
+	    // 1. Repositoryを使って、DBから全データを取ってくる
+	    List<Talent> talentList = talentRepository.findAll();
+	    
+	    // 2. 画面（HTML）に「talentList」という名前で渡す
+	    model.addAttribute("talentList", talentList);
+	    
+	    return "talent-list"; 
 	}
 
 	@PostMapping("/talent/confirm")
