@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
-import com.example.demo.repository.TalentRepository;
+import com.example.demo.service.TalentService;
 
 @Controller
 public class TalentController { 
 
 	@Autowired
-	private TalentRepository talentRepository;
+    private TalentService talentService;
 	
 	@GetMapping("/talent")
 	public String showForm(TalentForm talentForm, Model model) {
@@ -39,11 +36,10 @@ public class TalentController {
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
 	public String showList(Model model) {
-	    // 1. Repositoryを使って、DBから全データを取ってくる
-	    List<Talent> talentList = talentRepository.findAll();
+	  
 	    
-	    // 2. 画面（HTML）に「talentList」という名前で渡す
-	    model.addAttribute("talentList", talentList);
+	    //  画面（HTML）に「talentList」という名前で渡す
+	    model.addAttribute("talentList", talentService.selectAll());
 	    
 	    return "talent-list"; 
 	}
@@ -64,12 +60,8 @@ public class TalentController {
 
 	@PostMapping("/talent/complete")
 	public String complete(@ModelAttribute TalentForm form) {
-		
-		Talent talent = new Talent();
-		talent.setTalentName(form.getTalentName());
-		talent.setReason(form.getReason());
-		
-		talentRepository.save(talent);
+		//FormをEntityに変換して保存をserviceに任せる
+		talentService.insert(form);
 		
 		return "redirect:/talent/complete"; //リダイレクトで二重投稿の防止
 	}
