@@ -28,15 +28,12 @@
 
 	<br>
 
-	// 削除機能の追加
 	<tr th:each="talent : ${talentList}">
-		//削除したいデータの表示
 		<td th:text="${talent.id}"></td>
 		<td th:text="${talent.talentName}"></td>
 		<td th:text="${talent.reason}"></td>
 		<td>
-			
-			//削除のためのフォーム
+
 			<form th:action="@{/talent/delete}" method="post">
 				<input type="hidden" name="id" th:value="${talent.id}">
 				<button type="submit">削除</button>
