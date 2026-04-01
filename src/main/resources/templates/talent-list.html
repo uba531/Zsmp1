@@ -1,30 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>タレント一覧</title>
-</head>
-<body>
-    <h1>登録済みタレント一覧</h1>
-    
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>名前</th>
-                <th>理由</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="talent : ${talentList}">
-                <td th:text="${talent.id}">1</td>
-                <td th:text="${talent.talentName}">名前</td>
-                <td th:text="${talent.reason}">理由</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <br>
-    <a th:href="@{/talent}">新規登録に戻る</a>
+<head>
+	<meta charset="UTF-8">
+	<title>タレント一覧</title>
+</head>
+
+<body>
+	<h1>登録済みタレント一覧</h1>
+
+	<table border="1">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>名前</th>
+				<th>理由</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="talent : ${talentList}">
+				<td th:text="${talent.id}">1</td>
+				<td th:text="${talent.talentName}">名前</td>
+				<td th:text="${talent.reason}">理由</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br>
+
+	// 削除機能の追加
+	<tr th:each="talent : ${talentList}">
+		//削除したいデータの表示
+		<td th:text="${talent.id}"></td>
+		<td th:text="${talent.talentName}"></td>
+		<td th:text="${talent.reason}"></td>
+		<td>
+			
+			//削除のためのフォーム
+			<form th:action="@{/talent/delete}" method="post">
+				<input type="hidden" name="id" th:value="${talent.id}">
+				<button type="submit">削除</button>
+			</form>
+		</td>
+	</tr>
+
+	<a th:href="@{/talent}">新規登録に戻る</a>
 </body>
+
 </html>
