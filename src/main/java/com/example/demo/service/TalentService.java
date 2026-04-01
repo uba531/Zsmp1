@@ -33,4 +33,21 @@ public class TalentService {
     public void delete(Integer id) {
         talentRepository.deleteById(id);
     }
+    
+ // IDを指定して1件検索する
+ public Talent findById(Integer id) {
+     // findByIdは「値がないかもしれない(Optional)」という型で返ってくるので、
+     // .orElse(null) をつけて「なければnullを返す」ようにします
+     return talentRepository.findById(id).orElse(null);
+ }
+
+ // データを更新する（保存と同じsaveメソッドを使います）
+ public void update(TalentForm form) {
+     Talent talent = new Talent();
+     talent.setId(form.getId()); // ←ここが重要！IDをセットすると「更新」になります
+     talent.setTalentName(form.getTalentName());
+     talent.setReason(form.getReason());
+     
+     talentRepository.save(talent);
+ }
 }
