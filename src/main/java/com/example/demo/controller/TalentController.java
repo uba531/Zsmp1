@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
@@ -84,10 +85,10 @@ public class TalentController {
 	
 	//IDを受け取って削除するコントローラー
 	@PostMapping("/talent/delete")
-	public String delete(@RequestParam Integer id) {
+	public String delete(@RequestParam Integer id,RedirectAttributes redirectAttributes) {
 	    // ServiceにあるIDデリートの呼び出し
 	    talentService.delete(id);
-	    
+	    redirectAttributes.addFlashAttribute("deleteMessage", "ID " + id + " は削除しました");
 	    return "redirect:/talent/list";
 	}
 	

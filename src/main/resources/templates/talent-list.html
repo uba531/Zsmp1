@@ -7,41 +7,34 @@
 </head>
 
 <body>
-	<h1>登録済みタレント一覧</h1>
+    <h1>登録済みタレント一覧</h1>
 
-	<table border="1">
-		<thead>
-			<tr>
-				<th>ID</th>
-				<th>名前</th>
-				<th>理由</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="talent : ${talentList}">
-				<td th:text="${talent.id}">1</td>
-				<td th:text="${talent.talentName}">名前</td>
-				<td th:text="${talent.reason}">理由</td>
-			</tr>
-		</tbody>
-	</table>
+    <p th:if="${deleteMessage}" th:text="${deleteMessage}" style="color: blue; font-weight: bold;"></p>
 
-	<br>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>理由</th>
+                <th>操作</th> </tr>
+        </thead>
+        <tbody>
+            <tr th:each="talent : ${talentList}">
+                <td th:text="${talent.id}">1</td>
+                <td th:text="${talent.talentName}">名前</td>
+                <td th:text="${talent.reason}">理由</td>
+                <td>
+                    <form th:action="@{/talent/delete}" method="post" style="display:inline;">
+                        <input type="hidden" name="id" th:value="${talent.id}">
+                        <button type="submit">削除</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-	<tr th:each="talent : ${talentList}">
-		<td th:text="${talent.id}"></td>
-		<td th:text="${talent.talentName}"></td>
-		<td th:text="${talent.reason}"></td>
-		<td>
-
-			<form th:action="@{/talent/delete}" method="post">
-				<input type="hidden" name="id" th:value="${talent.id}">
-				<button type="submit">削除</button>
-			</form>
-		</td>
-	</tr>
-
-	<a th:href="@{/talent}">新規登録に戻る</a>
+    <br>
+    <a th:href="@{/talent}">新規登録に戻る</a>
 </body>
-
 </html>
