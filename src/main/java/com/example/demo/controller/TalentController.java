@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,11 +62,17 @@ public class TalentController {
 	}
 
 	@PostMapping("/talent/complete")
-	public String complete(@ModelAttribute TalentForm form) {
-		//FormをEntityに変換して保存をserviceに任せる
-		talentService.insert(form);
-		
-		return "redirect:/talent/complete"; //リダイレクトで二重投稿の防止
+	public String complete(@Validated @ModelAttribute TalentForm form, BindingResult result, Model model) {
+	    
+	    // 1. エラーチェックの結果を判定する
+	    if (result.hasErrors()) {
+	        // エラーがあったら、保存せずに「入力画面」のHTMLを返す
+	        return "talent-input"; 
+	    }
+	    
+	    // エラーがなければ、今まで通り保存してリダイレクト
+	    talentService.insert(form);
+	    return "redirect:/talent/complete";
 	}
 
 	@GetMapping("/talent/complete")
