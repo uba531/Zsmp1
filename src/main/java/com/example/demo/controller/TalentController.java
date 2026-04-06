@@ -23,20 +23,16 @@ public class TalentController {
 	@Autowired
     private TalentService talentService;
 	
+	// 画面に入力フォームを表示
 	@GetMapping("/talent")
-	public String showForm(TalentForm talentForm, Model model) {
-	   
-	    if (talentForm == null) {
-	        talentForm = new TalentForm();
-	    }
-	    
-	    // 2. バケツを画面に渡す（中身があってもなくても、これで共通化できる）
-	    model.addAttribute("talentForm", talentForm);
-	    
+	public String showForm(@ModelAttribute TalentForm talentForm) {
+	 
 	    return "talent-input";
+	
+	  
 	}
 	
-	
+	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
 	public String showList(Model model) {
@@ -48,6 +44,7 @@ public class TalentController {
 	    return "talent-list"; 
 	}
 
+	 //入力内容確認
 	@PostMapping("/talent/confirm")
 	public String confirm(
 			@Valid 
@@ -62,6 +59,7 @@ public class TalentController {
 		return "talent-confirm";
 	}
 
+	//内容を保存し完了画面へ
 	@PostMapping("/talent/complete")
 	public String complete(@Validated @ModelAttribute TalentForm form, BindingResult result, Model model) {
 	    
@@ -76,6 +74,7 @@ public class TalentController {
 	    return "redirect:/talent/complete";
 	}
 
+	//完了画面の表示
 	@GetMapping("/talent/complete")
 	public String showComplete() {
 		return "talent-complete"; 
@@ -83,7 +82,7 @@ public class TalentController {
 	
 	
 	
-	//IDを受け取って削除するコントローラー
+	//IDを受け取って削除
 	@PostMapping("/talent/delete")
 	public String delete(@RequestParam Integer id,RedirectAttributes redirectAttributes) {
 	    // ServiceにあるIDデリートの呼び出し
