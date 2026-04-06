@@ -25,6 +25,7 @@
                 <td th:text="${talent.talentName}">名前</td>
                 <td th:text="${talent.reason}">理由</td>
                 <td>
+					<a th:href="@{/talent/edit(id=${talent.id})}">編集</a>
                     <form th:action="@{/talent/delete}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${talent.id}">
                         <button type="submit">削除</button>

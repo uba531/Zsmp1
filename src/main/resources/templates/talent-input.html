@@ -11,7 +11,9 @@
 	<h2>タレント入力</h2>
 
 	<form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}">
-
+		<input type="hidden" th:field="*{id}">
+		
+		
 		タレント名:
 		<input type="text" th:field="*{talentName}">
 		<div th:errors="*{talentName}" style="color:red"> </div>

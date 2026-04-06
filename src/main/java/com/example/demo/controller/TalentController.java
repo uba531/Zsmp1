@@ -72,7 +72,7 @@ public class TalentController {
 	    }
 	    
 	    // エラーがなければ、今まで通り保存してリダイレクト
-	    talentService.insert(form);
+	    talentService.update(form);
 	    return "redirect:/talent/complete";
 	}
 
