@@ -61,7 +61,12 @@ public class TalentController {
 
 	//内容を保存し完了画面へ
 	@PostMapping("/talent/complete")
-	public String complete(@Validated @ModelAttribute TalentForm form, BindingResult result, Model model) {
+	public String complete(
+			@Validated @ModelAttribute
+			TalentForm form,
+			BindingResult result, 
+			Model model,
+			RedirectAttributes redirectAttributes) {
 	    
 	    // 1. エラーチェックの結果を判定する
 	    if (result.hasErrors()) {
@@ -71,7 +76,10 @@ public class TalentController {
 	    
 	    // エラーがなければ、今まで通り保存してリダイレクト
 	    talentService.update(form);
-	    return "redirect:/talent/complete";
+	    
+	    redirectAttributes.addFlashAttribute(
+	    		"message", "タレント情報を更新しました！");
+	    return "redirect:/talent/list";
 	}
 
 	//完了画面の表示

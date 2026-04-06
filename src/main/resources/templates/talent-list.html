@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-	<meta charset="UTF-8">
-	<title>タレント一覧</title>
+    <meta charset="UTF-8">
+    <title>タレント一覧</title>
 </head>
-
 <body>
     <h1>登録済みタレント一覧</h1>
 
-    <p th:if="${deleteMessage}" th:text="${deleteMessage}" style="color: blue; font-weight: bold;"></p>
+    <div th:if="${message}">
+        <span th:text="${message}" style="color: green; font-weight: bold;"></span>
+        <a th:href="@{/talent}">[ 続けて登録する ]</a>
+    </div>
 
-    <table border="1">
+    <div th:if="${deleteMessage}">
+        <span th:text="${deleteMessage}" style="color: red; font-weight: bold;"></span>
+    </div>
+
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
                 <th>名前</th>
                 <th>理由</th>
-                <th>操作</th> </tr>
+                <th>操作</th>
+            </tr>
         </thead>
         <tbody>
             <tr th:each="talent : ${talentList}">
@@ -25,7 +31,7 @@
                 <td th:text="${talent.talentName}">名前</td>
                 <td th:text="${talent.reason}">理由</td>
                 <td>
-					<a th:href="@{/talent/edit(id=${talent.id})}">編集</a>
+                    <a th:href="@{/talent/edit(id=${talent.id})}">編集</a>
                     <form th:action="@{/talent/delete}" method="post" style="display:inline;">
                         <input type="hidden" name="id" th:value="${talent.id}">
                         <button type="submit">削除</button>
