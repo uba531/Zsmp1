@@ -11,7 +11,7 @@ public class TalentForm {
 	
 	private Integer id; 
 
-	@Size(max = 15, message = "タレント名は50文字以内で入力してください")
+	@Size(max = 15, message = "タレント名は15文字以内で入力してください")
 	@NotBlank(message = "タレント名を入力してください")
 	private String talentName;
 	
