@@ -50,4 +50,8 @@ public class TalentService {
      
      talentRepository.save(talent);
  }
+ 
+ public List<Talent> findAll() {
+	    return talentRepository.findAll(); // リポジトリの機能をそのまま呼ぶ
+	}
 }

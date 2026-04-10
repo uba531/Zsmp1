@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import static org.junit.jupiter.api.Assertions.*; // 検証用メソッド
 
+import java.util.List;
+
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.Test; // テスト用アノテーション
@@ -18,17 +20,30 @@ class TalentServiceTest {
 	private TalentService talentService;
 
 	@Test
-	@Transactional // トランザクション管理（テスト後にロールバックされる）
+	@Transactional
 	void testFindById() {
-		// 【追加】まずテストデータを1件登録する（準備）
-		TalentForm form = new TalentForm();
-		form.setTalentName("テストタレント");
-		form.setReason("テスト理由");
-		talentService.insert(form); // これでDBに1件入る
-		Talent result = talentService.findById(1);
-
-		// 3. 検証
-		assertNotNull(result, "データが取得できるはずです");
-		assertEquals("テストタレント", result.getTalentName(), "名前が一致するはずです");
+	    // 1. 【準備】
+	    TalentForm form = new TalentForm();
+	    form.setTalentName("テストタレント");
+	    form.setReason("テスト理由");
+	    talentService.insert(form); 
+	    
+	    // 2. 【実行】
+	    // データベースにある全件を一度取ってくる
+	    List<Talent> allTalents = talentService.findAll(); 
+	    
+	    // リストの「一番最後」に入っているのが、今 insert したデータ
+	    // list.size() - 1 で、最後の要素の添え字（インデックス）を指定
+	    Talent latestTalent = allTalents.get(allTalents.size() - 1);
+	    
+	    // そのデータから、本物のID（その時たまたま割り振られた番号）を取り出す
+	    int realId = latestTalent.getId(); 
+	    
+	    // その本物のIDを使って検索する
+	    Talent result = talentService.findById(realId);
+	    
+	    // 3. 【検証】
+	    assertNotNull(result, "登録したデータが確実に取得できるはずです");
+	    assertEquals("テストタレント", result.getTalentName());
 	}
 }
