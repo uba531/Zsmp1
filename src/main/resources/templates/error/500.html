@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>500 Internal Server Error</title>
+</head>
+<body>
+  <h1>500 - サーバーエラー</h1>
+  <p>システムでエラーが発生しました。</p>
+
+  <hr>
+
+  <p th:text="'エラー内容: ' + ${message}"></p>
+  <p th:text="'URL: ' + ${path}"></p>
+
+  <a href="/">トップへ戻る</a>
+</body>
+</html>

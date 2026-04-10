@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>400 Bad Request</title>
+</head>
+<body>
+  <h1>400 - リクエストエラー</h1>
+  <p>入力内容に問題があります。</p>
+
+  <hr>
+
+  <p th:text="'詳細: ' + ${message}"></p>
+
+  <a href="/">トップへ戻る</a>
+</body>
+</html>

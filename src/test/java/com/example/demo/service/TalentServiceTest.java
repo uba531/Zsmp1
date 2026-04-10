@@ -43,7 +43,7 @@ class TalentServiceTest {
 	    Talent result = talentService.findById(realId);
 	    
 	    // 3. 【検証】
-	    assertNotNull(result, "登録したデータが確実に取得できるはずです");
+	    assertNotNull(result, "登録したデータが取得できません");
 	    assertEquals("テストタレント", result.getTalentName());
 	}
 }

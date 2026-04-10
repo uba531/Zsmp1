@@ -120,4 +120,9 @@ public class TalentController {
 	    return "talent-input";
 	}
 	
+	@GetMapping("/test")
+	public String test(@RequestParam Integer id) {
+	    return "index";
+	}
+	
 }
