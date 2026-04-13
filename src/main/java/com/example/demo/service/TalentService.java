@@ -2,18 +2,20 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
 import com.example.demo.repository.TalentRepository;
 
-@Service // これを付けることでSpringの管理対象（職人）になります
+import lombok.RequiredArgsConstructor;
+
+@Service 
+@RequiredArgsConstructor 
 public class TalentService {
 
-    @Autowired
-    private TalentRepository talentRepository;
+    
+    private final TalentRepository talentRepository;
 
     // 一覧を取得
     public List<Talent> selectAll() {
