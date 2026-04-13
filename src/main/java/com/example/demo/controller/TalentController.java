@@ -18,37 +18,34 @@ import com.example.demo.form.TalentForm;
 import com.example.demo.service.TalentService;
 
 @Controller
-public class TalentController { 
+public class TalentController {
 
 	@Autowired
-    private TalentService talentService;
-	
+	private TalentService talentService;
+
 	// 画面に入力フォームを表示
 	@GetMapping("/talent")
 	public String showForm(@ModelAttribute TalentForm talentForm) {
-	 
-	    return "talent-input";
-	
-	  
+
+		return "talent-input";
+
 	}
-	
+
 	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
 	public String showList(Model model) {
-	  
-	    
-	    //  画面（HTML）に「talentList」という名前で渡す
-	    model.addAttribute("talentList", talentService.selectAll());
-	    
-	    return "talent-list"; 
+
+		//  画面（HTML）に「talentList」という名前で渡す
+		model.addAttribute("talentList", talentService.selectAll());
+
+		return "talent-list";
 	}
 
-	 //入力内容確認
+	//入力内容確認
 	@PostMapping("/talent/confirm")
 	public String confirm(
-			@Valid 
-			@ModelAttribute TalentForm talentForm,
+			@Valid @ModelAttribute TalentForm talentForm,
 			BindingResult result,
 			Model model) {
 
@@ -62,67 +59,59 @@ public class TalentController {
 	//内容を保存し完了画面へ
 	@PostMapping("/talent/complete")
 	public String complete(
-			@Validated @ModelAttribute
-			TalentForm form,
-			BindingResult result, 
+			@Validated @ModelAttribute TalentForm form,
+			BindingResult result,
 			Model model,
 			RedirectAttributes redirectAttributes) {
-	    
-	    // 1. エラーチェックの結果を判定する
-	    if (result.hasErrors()) {
-	        // エラーがあったら、保存せずに「入力画面」のHTMLを返す
-	        return "talent-input"; 
-	    }
-	    
-	    // エラーがなければ、今まで通り保存してリダイレクト
-	    talentService.update(form);
-	    
-	    redirectAttributes.addFlashAttribute(
-	    		"message", "タレント情報を更新しました！");
-	    return "redirect:/talent/list";
+
+		// 1. エラーチェックの結果を判定する
+		if (result.hasErrors()) {
+			// エラーがあったら、保存せずに「入力画面」のHTMLを返す
+			return "talent-input";
+		}
+
+		// エラーがなければ、今まで通り保存してリダイレクト
+		talentService.update(form);
+
+		redirectAttributes.addFlashAttribute(
+				"message", "タレント情報を更新しました！");
+		return "redirect:/talent/list";
 	}
 
 	//完了画面の表示
 	@GetMapping("/talent/complete")
-	public String showComplete() {
-		return "talent-complete"; 
+public String showComplete() {
+		return "talent-complete";
 	}
-	
-	
-	
+
 	//IDを受け取って削除
 	@PostMapping("/talent/delete")
-	public String delete(@RequestParam Integer id,RedirectAttributes redirectAttributes) {
-	    // ServiceにあるIDデリートの呼び出し
-	    talentService.delete(id);
-	    redirectAttributes.addFlashAttribute("deleteMessage", "ID " + id + " は削除しました");
-	    return "redirect:/talent/list";
+	public String delete(@RequestParam Integer id, RedirectAttributes redirectAttributes) {
+		// ServiceにあるIDデリートの呼び出し
+		talentService.delete(id);
+		redirectAttributes.addFlashAttribute("deleteMessage", "ID " + id + " は削除しました");
+		return "redirect:/talent/list";
 	}
-	
+
 	//IDを受け取って編集画面に移動する
 	@GetMapping("/talent/edit")
 	public String edit(@RequestParam Integer id, Model model) {
-	    // 1. まずはDBからデータを1回だけ取ってきて、talentという変数に入れる
-	    Talent talent = talentService.findById(id);
+		// 1. まずはDBからデータを1回だけ取ってきて、talentという変数に入れる
+		Talent talent = talentService.findById(id);
 
-	    // (オプション) もしデータがなかった時のための安全策
-	    if (talent == null) {
-	        return "redirect:/talent/list"; // 一覧に逃がす
-	    }
+		// (オプション) もしデータがなかった時のための安全策
+		if (talent == null) {
+			return "redirect:/talent/list"; // 一覧に逃がす
+		}
 
-	    // 2. 取ってきたデータをForm（バケツ）に移し替える
-	    TalentForm talentForm = new TalentForm();
-	    talentForm.setId(talent.getId());
-	    talentForm.setTalentName(talent.getTalentName());
-	    talentForm.setReason(talent.getReason());
-	    
-	    model.addAttribute("talentForm", talentForm);
-	    return "talent-input";
+		// 2. 取ってきたデータをForm（バケツ）に移し替える
+		TalentForm talentForm = new TalentForm();
+		talentForm.setId(talent.getId());
+		talentForm.setTalentName(talent.getTalentName());
+		talentForm.setReason(talent.getReason());
+
+		model.addAttribute("talentForm", talentForm);
+		return "talent-input";
 	}
-	
-	@GetMapping("/test")
-	public String test(@RequestParam Integer id) {
-	    return "index";
-	}
-	
+
 }
