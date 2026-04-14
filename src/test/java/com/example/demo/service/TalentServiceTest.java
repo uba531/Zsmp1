@@ -21,29 +21,30 @@ class TalentServiceTest {
 
 	@Test
 	@Transactional
-	void testFindById() {
-	    // 1. 【準備】
+	void testUpdate() {
+	    // 1. 【準備】まずはデータを1件登録する
 	    TalentForm form = new TalentForm();
-	    form.setTalentName("テストタレント");
-	    form.setReason("テスト理由");
-	    talentService.insert(form); 
+	    form.setTalentName("テスト太郎");
+	    form.setReason("更新前の理由");
+	    talentService.insert(form);
+
+	    // 登録されたデータを一度すべて取得し、最新（今入れたもの）のIDを特定する
+	    List<Talent> allTalents = talentService.findAll();
+	    Talent target = allTalents.get(allTalents.size() - 1);
+	    int targetId = target.getId();
+
+	    // 2. 【実行】更新用のデータを作って、updateメソッドを呼び出す
+	    TalentForm updateForm = new TalentForm();
+	    updateForm.setTalentName("更新次郎"); // 名前を変更
+	    updateForm.setReason("更新後の理由");
 	    
-	    // 2. 【実行】
-	    // データベースにある全件を一度取ってくる
-	    List<Talent> allTalents = talentService.findAll(); 
+	    talentService.update(targetId, updateForm);
+
+	    // 3. 【検証】再度IDで検索して、中身が書き換わっているか確認する
+	    Talent result = talentService.findById(targetId);
 	    
-	    // リストの「一番最後」に入っているのが、今 insert したデータ
-	    // list.size() - 1 で、最後の要素の添え字（インデックス）を指定
-	    Talent latestTalent = allTalents.get(allTalents.size() - 1);
-	    
-	    // そのデータから、本物のID（その時たまたま割り振られた番号）を取り出す
-	    int realId = latestTalent.getId(); 
-	    
-	    // その本物のIDを使って検索する
-	    Talent result = talentService.findById(realId);
-	    
-	    // 3. 【検証】
-	    assertNotNull(result, "登録したデータが取得できません");
-	    assertEquals("テストタレント", result.getTalentName());
+	    assertNotNull(result);
+	    assertEquals("更新次郎", result.getTalentName(), "名前が更新されていません");
+	    assertEquals("更新後の理由", result.getReason(), "理由が更新されていません");
 	}
 }
