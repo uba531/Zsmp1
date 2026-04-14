@@ -37,7 +37,8 @@
 					<a th:href="@{/talent/edit(id=${talent.id})}">編集</a>
 					<form th:action="@{/talent/delete}" method="post" style="display:inline;">
 						<input type="hidden" name="id" th:value="${talent.id}">
-						<button type="submit">削除</button>
+						<button type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+
 					</form>
 				</td>
 			</tr>
