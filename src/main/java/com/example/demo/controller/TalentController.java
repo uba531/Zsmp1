@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TalentController {
 
-	
 	private final TalentService talentService;
 
 	// 画面に入力フォームを表示
@@ -39,18 +39,22 @@ public class TalentController {
 	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
-	public String showList(Model model, @PageableDefault(size = 5) Pageable pageable) {
+	public String showList(Model model,
+			@PageableDefault(size = 5,
+			sort = "id", 
+			direction = Direction.DESC
+			) Pageable pageable) {
 
-	    // 1. Serviceを呼び出して、現在のページ情報を取得
-	    Page<Talent> talentPage = talentService.findAll(pageable);
+		// 1. Serviceを呼び出して、現在のページ情報を取得
+		Page<Talent> talentPage = talentService.findAll(pageable);
 
-	    // 2. 「中身のリスト」を今までと同じ名前で渡す（これでテーブル部分は壊れません）
-	    model.addAttribute("talentList", talentPage.getContent());
+		// 2. 「中身のリスト」を今までと同じ名前で渡す（これでテーブル部分は壊れません）
+		model.addAttribute("talentList", talentPage.getContent());
 
-	    // 3. 「ページ情報そのもの」も渡す（下のボタン作成で使います）
-	    model.addAttribute("page", talentPage);
+		// 3. 「ページ情報そのもの」も渡す（下のボタン作成で使います）
+		model.addAttribute("page", talentPage);
 
-	    return "talent-list";
+		return "talent-list";
 	}
 
 	//入力内容確認
@@ -70,32 +74,31 @@ public class TalentController {
 	//内容を保存し完了画面へ
 	@PostMapping("/talent/complete")
 	public String complete(
-	        @Validated 
-	        @ModelAttribute TalentForm form,
-	        BindingResult result,
-	        Model model,
-	        RedirectAttributes redirectAttributes) {
+			@Validated @ModelAttribute TalentForm form,
+			BindingResult result,
+			Model model,
+			RedirectAttributes redirectAttributes) {
 
-	    if (result.hasErrors()) {
-	        return "talent-input";
-	    }
+		if (result.hasErrors()) {
+			return "talent-input";
+		}
 
-	    if (form.getId() == null) {
-	        // IDが空っぽなら「新規登録」
-	        talentService.insert(form);
-	        redirectAttributes.addFlashAttribute("message", "新しく登録しました！");
-	    } else {
-	        // IDがあるなら「更新」
-	        talentService.update(form.getId(), form);
-	        redirectAttributes.addFlashAttribute("message", "情報を更新しました！");
-	    }
+		if (form.getId() == null) {
+			// IDが空っぽなら「新規登録」
+			talentService.insert(form);
+			redirectAttributes.addFlashAttribute("message", "新しく登録しました！");
+		} else {
+			// IDがあるなら「更新」
+			talentService.update(form.getId(), form);
+			redirectAttributes.addFlashAttribute("message", "情報を更新しました！");
+		}
 
-	    return "redirect:/talent/list";
+		return "redirect:/talent/list";
 	}
 
 	//完了画面の表示
 	@GetMapping("/talent/complete")
-public String showComplete() {
+	public String showComplete() {
 		return "talent-complete";
 	}
 
