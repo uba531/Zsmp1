@@ -9,6 +9,8 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test; // テスト用アノテーション
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.example.demo.entity.Talent;
 import com.example.demo.form.TalentForm;
@@ -27,9 +29,11 @@ class TalentServiceTest {
 	    form.setTalentName("テスト太郎");
 	    form.setReason("更新前の理由");
 	    talentService.insert(form);
+	    
+	    Page<Talent> talentPage = talentService.findAll(PageRequest.of(0, 100));
 
 	    // 登録されたデータを一度すべて取得し、最新（今入れたもの）のIDを特定する
-	    List<Talent> allTalents = talentService.findAll();
+	    List<Talent> allTalents = talentPage.getContent();
 	    Talent target = allTalents.get(allTalents.size() - 1);
 	    int targetId = target.getId();
 

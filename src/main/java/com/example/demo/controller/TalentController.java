@@ -2,6 +2,9 @@ package com.example.demo.controller;
 
 import jakarta.validation.Valid;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,12 +39,18 @@ public class TalentController {
 	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
-	public String showList(Model model) {
+	public String showList(Model model, @PageableDefault(size = 5) Pageable pageable) {
 
-		//  画面（HTML）に「talentList」という名前で渡す
-		model.addAttribute("talentList", talentService.selectAll());
+	    // 1. Serviceを呼び出して、現在のページ情報を取得
+	    Page<Talent> talentPage = talentService.findAll(pageable);
 
-		return "talent-list";
+	    // 2. 「中身のリスト」を今までと同じ名前で渡す（これでテーブル部分は壊れません）
+	    model.addAttribute("talentList", talentPage.getContent());
+
+	    // 3. 「ページ情報そのもの」も渡す（下のボタン作成で使います）
+	    model.addAttribute("page", talentPage);
+
+	    return "talent-list";
 	}
 
 	//入力内容確認

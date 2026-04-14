@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.Talent;
@@ -44,23 +46,7 @@ public class TalentService {
  }
 
  // データを更新する（保存と同じsaveメソッドを使います）
-// public void update(TalentForm form) {
-//     Talent talent = new Talent();
-//     talent.setId(form.getId()); // ←ここが重要！IDをセットすると「更新」になります
-//     talent.setTalentName(form.getTalentName());
-//     talent.setReason(form.getReason());
-//     
-//     talentRepository.save(talent);
-// }
- 
-//TalentService.java 内に追加
 
-/**
-* タレント情報の更新
-*/
- /**
-  * タレント情報の更新
-  */
  public void update(int id, TalentForm form) {
      // 1. 変数名を talentRepository に修正
      Talent talent = talentRepository.findById(id)
@@ -74,7 +60,7 @@ public class TalentService {
      talentRepository.save(talent);
  }
  
- public List<Talent> findAll() {
-	    return talentRepository.findAll(); // リポジトリの機能をそのまま呼ぶ
+ public Page<Talent> findAll(Pageable pageable) {
+	    return talentRepository.findAll(pageable); 
 	}
 }
