@@ -71,11 +71,16 @@ public class TalentController {
 	        return "talent-input";
 	    }
 
-	  
-	    talentService.update(form.getId(), form);
+	    if (form.getId() == null) {
+	        // IDが空っぽなら「新規登録」
+	        talentService.insert(form);
+	        redirectAttributes.addFlashAttribute("message", "新しく登録しました！");
+	    } else {
+	        // IDがあるなら「更新」
+	        talentService.update(form.getId(), form);
+	        redirectAttributes.addFlashAttribute("message", "情報を更新しました！");
+	    }
 
-	    redirectAttributes.addFlashAttribute(
-	            "message", "タレント情報を更新しました！");
 	    return "redirect:/talent/list";
 	}
 
