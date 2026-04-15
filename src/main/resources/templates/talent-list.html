@@ -19,6 +19,12 @@
 		<span th:text="${deleteMessage}" style="color: red; font-weight: bold;"></span>
 	</div>
 
+	<form th:action="@{/talent/list}" method="get" style="margin-bottom: 20px;">
+	    <input type="text" name="keyword" th:value="${keyword}" placeholder="名前で検索">
+	    <button type="submit">検索</button>
+	    <a th:href="@{/talent/list}">クリア</a>
+	</form>
+	
 	<table>
 		<thead>
 			<tr>
@@ -46,27 +52,27 @@
 	</table>
 
 	<div th:if="${page.totalPages > 1}" style="margin-top: 20px;">
-		<nav>
-			<ul style="list-style: none; display: flex; gap: 10px;">
+	    <nav>
+	        <ul style="list-style: none; display: flex; gap: 10px;">
 
-				<li>
-					<span th:if="${page.first}" style="color: gray;">前へ</span>
-					<a th:unless="${page.first}" th:href="@{/talent/list(page=${page.number - 1})}">前へ</a>
-				</li>
+	            <li>
+	                <span th:if="${page.first}" style="color: gray;">前へ</span>
+	                <a th:unless="${page.first}" th:href="@{/talent/list(page=${page.number - 1}, keyword=${keyword})}">前へ</a>
+	            </li>
 
-				<li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
-					<span th:if="${i == page.number}" th:text="${i + 1}"
-						style="font-weight: bold; border: 1px solid #000; padding: 2px 5px;">1</span>
-					<a th:unless="${i == page.number}" th:href="@{/talent/list(page=${i})}" th:text="${i + 1}">1</a>
-				</li>
+	            <li th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+	                <span th:if="${i == page.number}" th:text="${i + 1}"
+	                    style="font-weight: bold; border: 1px solid #000; padding: 2px 5px;">1</span>
+	                <a th:unless="${i == page.number}" th:href="@{/talent/list(page=${i}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+	            </li>
 
-				<li>
-					<span th:if="${page.last}" style="color: gray;">次へ</span>
-					<a th:unless="${page.last}" th:href="@{/talent/list(page=${page.number + 1})}">次へ</a>
-				</li>
+	            <li>
+	                <span th:if="${page.last}" style="color: gray;">次へ</span>
+	                <a th:unless="${page.last}" th:href="@{/talent/list(page=${page.number + 1}, keyword=${keyword})}">次へ</a>
+	            </li>
 
-			</ul>
-		</nav>
+	        </ul>
+	    </nav>
 	</div>
 
 	<br>

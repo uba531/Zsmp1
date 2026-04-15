@@ -30,7 +30,7 @@ class TalentServiceTest {
 	    form.setReason("更新前の理由");
 	    talentService.insert(form);
 	    
-	    Page<Talent> talentPage = talentService.findAll(PageRequest.of(0, 100));
+	    Page<Talent> talentPage = talentService.findAll(PageRequest.of(0, 100),null);
 
 	    // 登録されたデータを一度すべて取得し、最新（今入れたもの）のIDを特定する
 	    List<Talent> allTalents = talentPage.getContent();

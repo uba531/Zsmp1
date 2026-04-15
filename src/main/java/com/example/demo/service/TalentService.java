@@ -60,7 +60,12 @@ public class TalentService {
      talentRepository.save(talent);
  }
  
- public Page<Talent> findAll(Pageable pageable) {
-	    return talentRepository.findAll(pageable); 
+ public Page<Talent> findAll(Pageable pageable, String keyword) {
+	    if (keyword != null && !keyword.isEmpty()) {
+	        // キーワードがあれば検索用メソッド
+	        return talentRepository.findByTalentNameContaining(keyword, pageable);
+	    }
+	    // なければ全件取得
+	    return talentRepository.findAll(pageable);
 	}
 }

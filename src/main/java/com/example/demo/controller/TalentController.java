@@ -39,28 +39,26 @@ public class TalentController {
 	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
-	public String showList(Model model,
-			@PageableDefault(size = 5,
-			sort = "id", 
-			direction = Direction.DESC
-			) Pageable pageable) {
+	public String showList(Model model, 
+	    @PageableDefault(size = 5,
+	    sort = "id",
+	    direction = Direction.DESC) Pageable pageable,
+	    @RequestParam(name = "keyword", required = false) String keyword) { // ★キーワードを受け取る
 
-		// 1. Serviceを呼び出して、現在のページ情報を取得
-		Page<Talent> talentPage = talentService.findAll(pageable);
+	    Page<Talent> talentPage = talentService.findAll(pageable, keyword);
+	    
+	    model.addAttribute("talentList", talentPage.getContent());
+	    model.addAttribute("page", talentPage);
+	    model.addAttribute("keyword", keyword); // ★検索窓にキーワードを残すために渡す
 
-		// 2. 「中身のリスト」を今までと同じ名前で渡す（これでテーブル部分は壊れません）
-		model.addAttribute("talentList", talentPage.getContent());
-
-		// 3. 「ページ情報そのもの」も渡す（下のボタン作成で使います）
-		model.addAttribute("page", talentPage);
-
-		return "talent-list";
+	    return "talent-list";
 	}
 
 	//入力内容確認
 	@PostMapping("/talent/confirm")
 	public String confirm(
-			@Valid @ModelAttribute TalentForm talentForm,
+			@Valid
+			@ModelAttribute TalentForm talentForm,
 			BindingResult result,
 			Model model) {
 
