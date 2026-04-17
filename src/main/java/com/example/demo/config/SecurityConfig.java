@@ -4,10 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,25 +14,30 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
-                .anyRequest().authenticated() // すべてのページに認証が必要
+                .anyRequest().authenticated()
             )
             .formLogin((form) -> form
-                .defaultSuccessUrl("/talent/list", true) // ログイン成功後の移動先
+                .defaultSuccessUrl("/talent/list", true)
+                .permitAll()
+            )
+            .logout((logout) -> logout
+                .logoutSuccessUrl("/login?logout")
                 .permitAll()
             );
         
         return http.build();
     }
 
+  
     @Bean
-    public UserDetailsService userDetailsService() {
-        // メモリ上に仮のユーザーを作成
-        UserDetails user = User.builder()
-            .username("admin")      // ユーザー名
-            .password("{noop}1234") // パスワード（{noop}は暗号化しないという意味）
-            .roles("USER")
-            .build();
+    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
+        org.springframework.security.core.userdetails.UserDetails user = 
+            org.springframework.security.core.userdetails.User.builder()
+                .username("admin")
+                .password("{noop}1234")
+                .roles("USER")
+                .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
     }
 }

@@ -74,6 +74,9 @@
 	        </ul>
 	    </nav>
 	</div>
+	<form th:action="@{/logout}" method="post">
+	    <button type="submit">ログアウト</button>
+	</form>
 
 	<br>
 	<a th:href="@{/talent}">新規登録に戻る</a>
