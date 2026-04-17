@@ -4,6 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -14,6 +18,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((requests) -> requests
+                // ① 管理者(ADMIN)だけがアクセスできるURL
+                .requestMatchers("/talent/edit/**", "/talent/delete/**").hasRole("ADMIN")
+                // ② それ以外はログインしていればOK
                 .anyRequest().authenticated()
             )
             .formLogin((form) -> form
@@ -28,16 +35,22 @@ public class SecurityConfig {
         return http.build();
     }
 
-  
     @Bean
-    public org.springframework.security.core.userdetails.UserDetailsService userDetailsService() {
-        org.springframework.security.core.userdetails.UserDetails user = 
-            org.springframework.security.core.userdetails.User.builder()
+    public UserDetailsService userDetailsService() {
+        // 管理者
+        UserDetails admin = User.builder()
                 .username("admin")
                 .password("{noop}1234")
+                .roles("ADMIN")
+                .build();
+
+        // 一般ユーザー
+        UserDetails user = User.builder()
+                .username("user")
+                .password("{noop}1111")
                 .roles("USER")
                 .build();
 
-        return new org.springframework.security.provisioning.InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(admin, user);
     }
 }
