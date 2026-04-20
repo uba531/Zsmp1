@@ -18,4 +18,6 @@ public class Talent {
 	private String talentName;
 
     private String reason;
+    
+    private String createdBy;
 }
