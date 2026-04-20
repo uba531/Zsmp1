@@ -7,6 +7,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -37,20 +39,28 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
+        // 暗号化マシンを用意
+        PasswordEncoder encoder = passwordEncoder();
+        
         // 管理者
         UserDetails admin = User.builder()
                 .username("admin")
-                .password("{noop}1234")
+                .password(encoder.encode("1234")) // 半角カッコに修正
                 .roles("ADMIN")
                 .build();
 
         // 一般ユーザー
         UserDetails user = User.builder()
                 .username("user")
-                .password("{noop}1111")
+                .password(encoder.encode("1111")) // 半角カッコに修正
                 .roles("USER")
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
+    }
+    
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
