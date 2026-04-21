@@ -25,10 +25,12 @@ public class TalentService {
     }
 
     // FormをEntityに変換して保存する職人の仕事
-    public void insert(TalentForm form) {
+    public void insert(TalentForm form, String username) {
         Talent talent = new Talent();
         talent.setTalentName(form.getTalentName());
         talent.setReason(form.getReason());
+        
+        talent.setCreatedBy(username);
         
         talentRepository.save(talent);
     }

@@ -28,7 +28,7 @@ class TalentServiceTest {
 	    TalentForm form = new TalentForm();
 	    form.setTalentName("テスト太郎");
 	    form.setReason("更新前の理由");
-	    talentService.insert(form);
+	    talentService.insert(form ,"test_user");
 	    
 	    Page<Talent> talentPage = talentService.findAll(PageRequest.of(0, 100),null);
 

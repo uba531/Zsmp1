@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,26 +41,23 @@ public class TalentController {
 	//一覧を表示する
 	//RepositoryでDBから全部のデータを取得
 	@GetMapping("/talent/list")
-	public String showList(Model model, 
-	    @PageableDefault(size = 5,
-	    sort = "id",
-	    direction = Direction.DESC) Pageable pageable,
-	    @RequestParam(name = "keyword", required = false) String keyword) { // ★キーワードを受け取る
+	public String showList(Model model,
+			@PageableDefault(size = 5, sort = "id", direction = Direction.DESC) Pageable pageable,
+			@RequestParam(name = "keyword", required = false) String keyword) { // ★キーワードを受け取る
 
-	    Page<Talent> talentPage = talentService.findAll(pageable, keyword);
-	    
-	    model.addAttribute("talentList", talentPage.getContent());
-	    model.addAttribute("page", talentPage);
-	    model.addAttribute("keyword", keyword); // ★検索窓にキーワードを残すために渡す
+		Page<Talent> talentPage = talentService.findAll(pageable, keyword);
 
-	    return "talent-list";
+		model.addAttribute("talentList", talentPage.getContent());
+		model.addAttribute("page", talentPage);
+		model.addAttribute("keyword", keyword); // ★検索窓にキーワードを残すために渡す
+
+		return "talent-list";
 	}
 
 	//入力内容確認
 	@PostMapping("/talent/confirm")
 	public String confirm(
-			@Valid
-			@ModelAttribute TalentForm talentForm,
+			@Valid @ModelAttribute TalentForm talentForm,
 			BindingResult result,
 			Model model) {
 
@@ -75,15 +74,18 @@ public class TalentController {
 			@Validated @ModelAttribute TalentForm form,
 			BindingResult result,
 			Model model,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes,
+			@AuthenticationPrincipal UserDetails user // ★ここに追加
+	) {
 
 		if (result.hasErrors()) {
 			return "talent-input";
 		}
 
 		if (form.getId() == null) {
-			// IDが空っぽなら「新規登録」
-			talentService.insert(form);
+			// IDが空なら「新規登録」
+			// ★Service側の新しい引数に合わせて user.getUsername() を渡す
+			talentService.insert(form, user.getUsername());
 			redirectAttributes.addFlashAttribute("message", "新しく登録しました！");
 		} else {
 			// IDがあるなら「更新」

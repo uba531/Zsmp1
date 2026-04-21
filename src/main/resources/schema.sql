@@ -17,5 +17,5 @@ CREATE TABLE IF NOT EXISTS talent (
     id INT AUTO_INCREMENT PRIMARY KEY,
     talent_name VARCHAR(100) NOT NULL,
     reason VARCHAR(255) NOT NULL,
-    created_by VARCHAR(50) NOT NULL,
+    created_by VARCHAR(50) NOT NULL
 );
