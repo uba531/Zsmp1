@@ -32,6 +32,7 @@
         /* ログアウトエリア */
         .footer-info { margin-top: 40px; padding: 20px; background: #e4e6eb; border-radius: 8px; text-align: center; }
     </style>
+	
 </head>
 
 <body>
@@ -54,13 +55,17 @@
         </form>
 
         <div th:each="talent : ${talentList}" class="post-card">
-            <div class="post-header">
-                <div>
-                    投稿者: <span class="post-user" th:text="${talent.createdBy}">ユーザー名</span>
-                    <span class="post-title" th:text="${'「' + talent.talentName + '」'}">タイトル</span>
-                </div>
-                <div style="color: #999;">No.<span th:text="${talent.id}">1</span></div>
-            </div>
+			<div class="post-header">
+			    <div>
+			        投稿者: <span class="post-user" th:text="${talent.createdBy}">ユーザー名</span>
+			        <span class="post-title" th:text="${'「' + talent.talentName + '」'}">タイトル</span>
+			        
+			        <div style="color: #999; font-size: 0.8em; margin-top: 2px;">
+			            <span th:text="${#temporals.format(talent.createdAt, 'yyyy/MM/dd HH:mm')}">日時</span>
+			        </div>
+			    </div>
+			    <div style="color: #999;">No.<span th:text="${talent.id}">1</span></div>
+			</div>
 
             <div class="post-content" th:text="${talent.reason}">理由・本文</div>
 
