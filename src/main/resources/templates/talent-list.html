@@ -61,7 +61,10 @@
 			        <span class="post-title" th:text="${'「' + talent.talentName + '」'}">タイトル</span>
 			        
 			        <div style="color: #999; font-size: 0.8em; margin-top: 2px;">
-			            <span th:text="${#temporals.format(talent.createdAt, 'yyyy/MM/dd HH:mm')}">日時</span>
+						<span th:text="${#temporals.format(
+						    talent.createdAt.atZoneSameInstant(T(java.time.ZoneId).of('Asia/Tokyo')),
+						    'yyyy/MM/dd HH:mm'
+						)}"></span>
 			        </div>
 			    </div>
 			    <div style="color: #999;">No.<span th:text="${talent.id}">1</span></div>

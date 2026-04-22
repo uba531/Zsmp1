@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,10 +26,10 @@ public class Talent {
     
     // DB側で自動生成されるため、Java側からは書き込まない設定
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private OffsetDateTime createdAt;
     
     @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    public void onPrePersist() {
+        this.createdAt = OffsetDateTime.now(ZoneOffset.UTC);
     }
 }
