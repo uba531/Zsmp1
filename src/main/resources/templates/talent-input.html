@@ -3,33 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>タレント入力</title>
 </head>
-<body>
+<body class="container mt-4">
 
-    <h2>タレント入力</h2>
+    <h2 class="mb-4">タレント入力</h2>
 
-    <form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}">
+    <form th:action="@{/talent/confirm}" method="post" th:object="${talentForm}" class="col-md-6">
         <input type="hidden" th:field="*{id}">
         
-        <div>
-            <label th:for="talentName">タレント名:</label>
-            <input type="text" th:field="*{talentName}">
-            <div th:errors="*{talentName}" style="color:red"></div>
+        <div class="mb-3">
+            <label th:for="talentName" class="form-label">タレント名:</label>
+            <input type="text" th:field="*{talentName}" class="form-control">
+            <div th:errors="*{talentName}" style="color:red" class="small"></div>
         </div>
-        <br>
 
-        <div>
-            <label th:for="reason">好きな理由:</label>
-            <input type="text" th:field="*{reason}">
-            <div th:errors="*{reason}" style="color:red"></div>
+        <div class="mb-3">
+            <label th:for="reason" class="form-label">好きな理由:</label>
+            <input type="text" th:field="*{reason}" class="form-control">
+            <div th:errors="*{reason}" style="color:red" class="small"></div>
         </div>
-        <br>
         
-        <button type="submit">確認画面へ</button>
+        <button type="submit" class="btn btn-primary">確認画面へ</button>
     </form>
 
-    <hr>
-    <a th:href="@{/talent/list}">一覧に戻る</a>
+    <hr class="mt-4">
+    <a th:href="@{/talent/list}" class="btn btn-outline-secondary">一覧に戻る</a>
 </body>
 </html>

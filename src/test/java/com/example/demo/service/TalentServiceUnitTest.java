@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.demo.entity.Talent;
 import com.example.demo.repository.TalentRepository;
 
-@ExtendWith(MockitoExtension.class) // ★Springを起動しない「爆速」モード
+@ExtendWith(MockitoExtension.class) // Springを起動しないモード
 class TalentServiceUnitTest {
 
     @Mock
@@ -27,10 +27,10 @@ class TalentServiceUnitTest {
     @Test
     @DisplayName("モックを使った初めての単体テスト")
     void testFirstMock() {
-        // 1. 【準備】DBが「ID:100なら、このデータを返す」という状況を捏造する
+        // 1. 【準備】
         Talent mockTalent = new Talent();
         mockTalent.setId(100);
-        mockTalent.setTalentName("モック次郎");
+        mockTalent.setTalentName("次郎");
         when(talentRepository.findById(100)).thenReturn(Optional.of(mockTalent));
 
         // 2. 【実行】Serviceのメソッドを呼ぶ
@@ -38,6 +38,6 @@ class TalentServiceUnitTest {
 
         // 3. 【検証】
         assertNotNull(result);
-        assertEquals("モック次郎", result.getTalentName());
+        assertEquals("次郎", result.getTalentName());
     }
 }
